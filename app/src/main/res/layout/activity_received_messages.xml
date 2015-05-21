@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="tdr.bugcar_v1.ReceivedMessagesActivity">
+
+    <TextView android:text="Mesaje:" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView11" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/messagesListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/relativeLayout2"
+        android:layout_below="@+id/Clear"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:id="@+id/Clear"
+        android:onClick="clearMessages"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:focusableInTouchMode="true"
+        android:focusable="true"><requestFocus /></Button>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset BTP"
+        android:id="@+id/resetBTPrtocolBtn"
+        android:onClick="resetBtnProtocolAction"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/Clear"
+        android:layout_toStartOf="@+id/Clear"><requestFocus /></Button>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/Clear"
+        android:layout_alignEnd="@+id/Clear"
+        android:id="@+id/relativeLayout2">
+
+        <Spinner
+            android:id="@+id/carActionsSpinner"
+            android:layout_width="185dp"
+            android:layout_height="30dp"
+            />
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/byte1Txt"
+            android:text=""
+            android:inputType="number"
+            android:layout_below="@+id/carActionsSpinner"
+
+            />
+
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/byte2Txt"
+            android:text=""
+            android:inputType="number"
+            android:layout_toRightOf="@+id/byte1Txt"
+            android:layout_toEndOf="@+id/byte1Txt"
+            android:layout_below="@+id/carActionsSpinner"
+            />
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/byte3Txt"
+            android:text=""
+            android:inputType="number"
+            android:layout_toRightOf="@+id/byte2Txt"
+            android:layout_toEndOf="@+id/byte2Txt"
+            android:layout_below="@+id/carActionsSpinner"
+            />
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/byte4Txt"
+            android:text=""
+            android:inputType="number"
+            android:layout_toRightOf="@+id/byte3Txt"
+            android:layout_toEndOf="@+id/byte3Txt"
+            android:layout_below="@+id/carActionsSpinner"
+            />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:id="@+id/button5"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/byte4Txt"
+            android:layout_toEndOf="@+id/byte4Txt"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="sendMessageBtnClick"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
