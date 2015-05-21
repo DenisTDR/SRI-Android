@@ -125,11 +125,14 @@ public class MainActivity extends ActionBarActivity {
         utilis.btChatService.write(s.getBytes());
         utilis.displayToast("Sent!");
     }
-    Intent controlPanel1;
-    public void openControlPanel1(View view){
-        if(controlPanel1 == null)
-            controlPanel1 = new Intent(this, remote_control_activity.class);
-        startActivity(controlPanel1);
+    Intent remoteControlIntent;
+    public void openRemoteControlClickAction(View view){
+        if(remoteControlIntent == null) {
+            remoteControlIntent = new Intent(this, remote_control_activity.class);
+            Log.d("", "intent created!");
+        }
+        startActivity(remoteControlIntent);
+
     }
     public void openControlPanel2(View view){
         Intent testActivity = new Intent(this, goActivity2.class);

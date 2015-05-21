@@ -40,71 +40,107 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:id="@+id/timeTxt"
-        android:text="3"
+        android:text=""
         android:layout_below="@+id/powerTxt"
         android:layout_toRightOf="@+id/timeLbl"
-        android:layout_toEndOf="@+id/timeLbl" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Back"
-        android:id="@+id/goBackBtn"
-        android:layout_below="@+id/rotateLeftBtn"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Front"
-        android:id="@+id/goFrontBtn"
-        android:layout_above="@+id/turnRightBtn"
-        android:layout_centerHorizontal="true"
-
+        android:layout_toEndOf="@+id/timeLbl"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Turn Left"
-        android:id="@+id/turnLeftBtn"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Turn Right"
-        android:id="@+id/turnRightBtn"
-        android:layout_above="@+id/rotateLeftBtn"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/backBtn"
+        android:layout_below="@+id/timeTxt"
+        android:layout_centerHorizontal="true">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rotate Left"
-        android:id="@+id/rotateLeftBtn"
-        android:layout_below="@+id/turnLeftBtn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <ImageButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/rotateLeftBtn"
+            android:src="@drawable/rotate_left"
+            android:scaleType="fitCenter"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/goFrontBtn"
+            android:src="@drawable/go_front"
+            android:scaleType="fitXY"
+            android:layout_above="@+id/goBackBtn"
+            android:layout_centerHorizontal="true" />
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/goBackBtn"
+            android:src="@drawable/go_back"
+            android:scaleType="fitXY"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/goFrontBtn"
+            android:layout_alignStart="@+id/goFrontBtn"
+            android:layout_marginBottom="5dp" />
+        <ImageButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/rotateRightBtn"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rotate_right"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rotate Right"
-        android:id="@+id/rotateRightBtn"
-        android:layout_below="@+id/turnRightBtn"
-        android:layout_alignRight="@+id/turnRightBtn"
-        android:layout_alignEnd="@+id/turnRightBtn" />
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/turnFrontRightBtn"
+            android:src="@drawable/turn_front_right"
+            android:scaleType="fitXY"
+            android:layout_above="@+id/turnBackRightBtn"
+            android:layout_toRightOf="@+id/goFrontBtn"
+            android:layout_toEndOf="@+id/goFrontBtn" />
 
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/turnFrontLeftBtn"
+            android:src="@drawable/turn_front_left"
+            android:scaleType="fitXY"
+            android:layout_above="@+id/goBackBtn"
+            android:layout_toLeftOf="@+id/goFrontBtn"
+            android:layout_toStartOf="@+id/goFrontBtn" />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/turnBackRightBtn"
+            android:src="@drawable/turn_back_right"
+            android:scaleType="fitXY"
+            android:layout_below="@+id/goFrontBtn"
+            android:layout_toRightOf="@+id/goBackBtn"
+            android:layout_toEndOf="@+id/goBackBtn" />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/turnBackLeftBtn"
+            android:src="@drawable/turn_back_left"
+            android:scaleType="fitXY"
+            android:layout_below="@+id/goFrontBtn"
+            android:layout_toLeftOf="@+id/goFrontBtn"
+            android:layout_toStartOf="@+id/goFrontBtn" />
+
+
+    </RelativeLayout>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
         android:id="@+id/backBtn"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/rotateRightBtn"
-        android:layout_alignEnd="@+id/rotateRightBtn" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="backBtnPressed"/>
 
 </RelativeLayout>

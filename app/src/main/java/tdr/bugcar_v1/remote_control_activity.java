@@ -1,5 +1,6 @@
 package tdr.bugcar_v1;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 public class remote_control_activity extends ActionBarActivity {
 
     Button goBackBtn, goFrontBtn, turnLeftBtn, turnRightBtn, rotateLeftBtn, rotateRightBtn;
+
     SeekBar powerSeekBar;
     EditText timeTxt;
     TextView powerTxt;
@@ -26,21 +28,21 @@ public class remote_control_activity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remote_control);
 
-        goBackBtn = (Button) findViewById(R.id.goBackBtn);
-        goFrontBtn = (Button) findViewById(R.id.goFrontBtn);
-        turnLeftBtn = (Button) findViewById(R.id.turnLeftBtn);
-        turnRightBtn = (Button) findViewById(R.id.turnRightBtn);
-        rotateLeftBtn = (Button) findViewById(R.id.rotateLeftBtn);
-        rotateRightBtn = (Button) findViewById(R.id.rotateRightBtn);
-        timeTxt = (EditText) findViewById(R.id.timeTxt);
-        powerTxt = (TextView) findViewById(R.id.powerTxt);
-
-        goFrontBtn.setOnTouchListener(goFrontTouchListener);
-        goBackBtn.setOnTouchListener(goBackTouchListener);
-        turnLeftBtn.setOnTouchListener(turnLeftTouchListener);
-        turnRightBtn.setOnTouchListener(turnRightTouchListener);
-        rotateLeftBtn.setOnTouchListener(rotateLeftTouchListener);
-        rotateRightBtn.setOnTouchListener(rotateRightTouchListener);
+//        goBackBtn = (Button) findViewById(R.id.goBackBtn);
+//        goFrontBtn = (Button) findViewById(R.id.goFrontBtn);
+//        turnLeftBtn = (Button) findViewById(R.id.turnLeftBtn);
+//        turnRightBtn = (Button) findViewById(R.id.turnRightBtn);
+//        rotateLeftBtn = (Button) findViewById(R.id.rotateLeftBtn);
+//        rotateRightBtn = (Button) findViewById(R.id.rotateRightBtn);
+          timeTxt = (EditText) findViewById(R.id.timeTxt);
+          powerTxt = (TextView) findViewById(R.id.powerTxt);
+//
+//        goFrontBtn.setOnTouchListener(goFrontTouchListener);
+//        goBackBtn.setOnTouchListener(goBackTouchListener);
+//        turnLeftBtn.setOnTouchListener(turnLeftTouchListener);
+//        turnRightBtn.setOnTouchListener(turnRightTouchListener);
+//        rotateLeftBtn.setOnTouchListener(rotateLeftTouchListener);
+//        rotateRightBtn.setOnTouchListener(rotateRightTouchListener);
 
         powerSeekBar = (SeekBar) findViewById(R.id.powerSeekBar);
 
@@ -48,7 +50,8 @@ public class remote_control_activity extends ActionBarActivity {
         powerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                powerTxt.setText("Power: "+ (String.format("%.0f", (double)progresValue/seekBar.getMax()*100)) + "%");
+                if(powerTxt!=null)
+                    powerTxt.setText("Power: "+ (String.format("%.0f", (double)progresValue/seekBar.getMax()*100)) + "%");
             }
 
             @Override
@@ -59,8 +62,9 @@ public class remote_control_activity extends ActionBarActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        powerSeekBar.setProgress(200);
+
     }
+
 
     @Override
     protected void onStart() {
@@ -68,13 +72,42 @@ public class remote_control_activity extends ActionBarActivity {
         utilis.currentActivity = this;
         utilis.applicationContext = getApplicationContext();
     }
+
+    @Override
+    protected void onPause(){
+        SavePreferences();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume(){
+        LoadPreferences();
+        super.onResume();
+    }
+    private void SavePreferences(){
+        if(powerSeekBar == null || timeTxt==null) return;
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("time", Integer.parseInt(timeTxt.getText().toString()));
+        editor.putInt("power", powerSeekBar.getProgress());
+        editor.apply();   // I missed to save the data to preference here,.
+    }
+
+    private void LoadPreferences(){
+        if(powerSeekBar == null || timeTxt==null) return;
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        powerSeekBar.setProgress(sharedPreferences.getInt("power", 75*255/100));
+        timeTxt.setText(String.valueOf(sharedPreferences.getInt("time", 3)));
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_remote_control_activity, menu);
         return true;
     }
-
+    public void backBtnPressed(View view){
+        finish();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -89,7 +122,6 @@ public class remote_control_activity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     View.OnTouchListener goFrontTouchListener=new View.OnTouchListener(){
         public boolean onTouch(    View v,    MotionEvent event){
             if (event.getAction() == MotionEvent.ACTION_DOWN) {

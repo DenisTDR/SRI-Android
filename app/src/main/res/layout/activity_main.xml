@@ -43,7 +43,7 @@
         android:text="Remote\nControl"
         android:id="@+id/openControlPanel1Btn"
         android:layout_marginBottom="74dp"
-        android:onClick="openControlPanel1"
+        android:onClick="openRemoteControlClickAction"
         android:layout_above="@+id/openBTpanelBtn"
         android:layout_alignLeft="@+id/openBTpanelBtn"
         android:layout_alignStart="@+id/openBTpanelBtn" />
