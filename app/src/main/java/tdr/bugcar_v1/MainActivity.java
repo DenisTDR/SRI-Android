@@ -178,7 +178,7 @@ public class MainActivity extends ActionBarActivity {
                     break;
                 case Constants.MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
-                    utilis.LogByteArray("Sent", writeBuf, (short)writeBuf.length);
+                    utilis.LogByteArray("Sentn", writeBuf, (short)writeBuf.length);
                     break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;

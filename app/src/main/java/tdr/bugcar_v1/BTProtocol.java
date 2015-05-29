@@ -26,9 +26,10 @@ public final class BTProtocol {
         //Log.d("BTProtocol", "Read byte: "+String.valueOf((int)theByte)+" -> "+String.valueOf((char)theByte));
         tmpBuff[tmpBuffC++] = theByte;
         if(tmpBuffC>=20) {
-            utilis.LogByteArray("Rec", tmpBuff, (short) tmpBuffC);
+            //utilis.LogByteArray("Rec", tmpBuff, (short) tmpBuffC);
             tmpBuffC = 0;
         }
+        //Log.d("rb", String.valueOf((int)theByte));
 
 
         switch (state){
@@ -74,7 +75,7 @@ public final class BTProtocol {
                     reTransmit("expected end byte"); // error ocurred, send retransmit signal
                 }
                 else{
-                    Log.d("BTProtocol", "a relatively valid command received!");
+                    //Log.d("BTProtocol", "a relatively valid command received!");
                     prelucreazaDatele();
                 }
                 state = Constants.BTState.WaitingStartByte;
@@ -101,8 +102,10 @@ public final class BTProtocol {
         reTransmit("");
     }
     static void reTransmit(String msg){
-        utilis.displayToast("Un mesaj primit de la masina nu a putut fi procesat!" +( msg.equals("")?"":(" ("+msg+")")));
-        Log.d("BTProtocol", "Un mesaj primit de la masina nu a putut fi procesat!" +( msg.equals("")?"":(" ("+msg+")")));
+        String msgTmp = "Un mesaj primit de la masina nu a putut fi procesat!" +( msg.equals("")?"":(" ("+msg+")"));
+        utilis.displayToast(msgTmp);
+        Log.d("BTProtocol", msgTmp);
+        utilis.receivedAMessage("[T]:"+msgTmp);
         //nu ii pot cere sa imi trimita din nou acel mesaj pentru ca nu l-a stocat
     }
     static void prelucreazaDatele(){
@@ -152,7 +155,7 @@ public final class BTProtocol {
 
                     checkBtQueue();
                     //Log.d("", "Checked sending queue");
-                    sendEmptyMessageDelayed(TIMER_1, 100);
+                    sendEmptyMessageDelayed(TIMER_1, 500);
                     break;
                 case TIMER_2:
                     // Do another time update etc..

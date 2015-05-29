@@ -35,14 +35,26 @@ public final class utilis {
            });
 
     }
-    static void displayMessage(String msg){
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(currentActivity);
-        dlgAlert.setMessage(msg);
-        dlgAlert.setTitle("");
-        dlgAlert.setPositiveButton("OK", null);
-        dlgAlert.setCancelable(true);
-        dlgAlert.create().show();
-
+    static void displayMessage(final String msg){
+        if(Looper.myLooper() == Looper.getMainLooper()) {
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(currentActivity);
+            dlgAlert.setMessage(msg);
+            dlgAlert.setTitle("");
+            dlgAlert.setPositiveButton("OK", null);
+            dlgAlert.setCancelable(true);
+            dlgAlert.create().show();
+        }
+        else
+            currentActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(currentActivity);
+                    dlgAlert.setMessage(msg);
+                    dlgAlert.setTitle("");
+                    dlgAlert.setPositiveButton("OK", null);
+                    dlgAlert.setCancelable(true);
+                    dlgAlert.create().show();
+                }
+            });
     }
 
     public static ArrayList<String> receivedMessagesList;
@@ -89,7 +101,9 @@ public final class utilis {
                         receivedMessagesAdapter.add(msg);
                 }
             });
-
+        if(msg2.startsWith("x")){
+            utilis.displayMessage(msg2.substring(1));
+        }
 
     }
 
