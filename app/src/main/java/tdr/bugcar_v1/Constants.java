@@ -43,8 +43,9 @@ public interface Constants {
         StopEngines,     //23
         RotirePeLocStanga, // 24
         RotirePeLocDreapta, // 25
-        ResetThings,		//26
-        EndAction         // 27
+        GetAverageSpeed,   //26
+        ResetThings,		//27
+        EndAction         // 28
     }
     public enum BTState{
         WaitingStartByte,  //0
