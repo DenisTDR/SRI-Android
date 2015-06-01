@@ -31,19 +31,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:focusableInTouchMode="true"
-        android:focusable="true"><requestFocus /></Button>
+        android:focusable="true"></Button>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reset BTP"
         android:id="@+id/resetBTPrtocolBtn"
         android:onClick="resetBtnProtocolAction"
-        android:focusableInTouchMode="true"
         android:focusable="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/Clear"
-        android:layout_toStartOf="@+id/Clear"><requestFocus /></Button>
+        android:layout_toStartOf="@+id/Clear"></Button>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="75dp"

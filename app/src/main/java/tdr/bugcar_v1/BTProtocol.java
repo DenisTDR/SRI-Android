@@ -23,6 +23,7 @@ public final class BTProtocol {
     public static ArrayList<byte[]> sendingQueue;
 
     static void  readByte(byte theByte){
+        shouldWait = true;
         //Log.d("BTProtocol", "Read byte: "+String.valueOf((int)theByte)+" -> "+String.valueOf((char)theByte));
         tmpBuff[tmpBuffC++] = theByte;
         if(tmpBuffC>=20) {
@@ -133,12 +134,17 @@ public final class BTProtocol {
 
 
     static void checkBtQueue(){
+        if(shouldWait){
+            shouldWait = false;
+            return;
+        }
         if(sendingQueue.size()>0){
             utilis.btChatService.write(sendingQueue.get(0));
             sendingQueue.remove(0);
         }
     }
 
+    public static boolean shouldWait = false;
     static MyTimers timer;
     public static class MyTimers extends Handler
     {
@@ -155,7 +161,7 @@ public final class BTProtocol {
 
                     checkBtQueue();
                     //Log.d("", "Checked sending queue");
-                    sendEmptyMessageDelayed(TIMER_1, 500);
+                    sendEmptyMessageDelayed(TIMER_1, 200);
                     break;
                 case TIMER_2:
                     // Do another time update etc..

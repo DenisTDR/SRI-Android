@@ -179,13 +179,14 @@ public class remote_control_activity extends ActionBarActivity {
 
 
     void sendCmdWithAction(Constants.CarAction cAction){
-        byte[] buff = new byte[6];
+        byte[] buff = new byte[7];
         buff[0] = (byte)0xAA;
         buff[1] = (byte)cAction.ordinal();
-        buff[2] = 2;
+        buff[2] = 3;
         buff[3] = (byte) Integer.parseInt(timeTxt.getText().toString());
         buff[4] = (byte) powerSeekBar.getProgress();
-        buff[5] = 0x55;
+        buff[5] = 0;
+        buff[6] = 0x55;
         BTProtocol.sendByteArray(buff);
     }
 }

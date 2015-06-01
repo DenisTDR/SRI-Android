@@ -37,13 +37,14 @@
         android:layout_marginTop="10dp" />
 
     <EditText
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:id="@+id/timeTxt"
         android:text=""
         android:layout_below="@+id/powerTxt"
         android:layout_toRightOf="@+id/timeLbl"
         android:layout_toEndOf="@+id/timeLbl"
+        android:inputType="number"
         />
 
 
