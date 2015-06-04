@@ -115,7 +115,7 @@ public class remote_control_activity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_remote_control_activity, menu);
+       // getMenuInflater().inflate(R.menu.menu_remote_control_activity, menu);
         return true;
     }
     public void backBtnPressed(View view){

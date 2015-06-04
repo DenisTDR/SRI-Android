@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -102,6 +105,7 @@ public final class utilis {
                 }
             });
         if(msg2.startsWith("x")){
+            utilis.playSound();
             utilis.displayMessage(msg2.substring(1));
         }
 
@@ -125,7 +129,47 @@ public final class utilis {
     public static Context applicationContext;
     public static Activity currentActivity;
 
+    public static void updateCarStats(){
+        try {
+            if (currentActivity instanceof MainActivity) {
+                if (Looper.myLooper() == Looper.getMainLooper()) {
+                    ((MainActivity) currentActivity).reloadCarStats();
+                } else
+                    currentActivity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (currentActivity instanceof MainActivity)
+                                ((MainActivity) currentActivity).reloadCarStats();
+                        }
+                    });
+            }
+        }catch(Exception exc) {}
+    }
+    public static void updateCarSettings(){
+        if(currentActivity instanceof CarSettings) {
+            if(Looper.myLooper() == Looper.getMainLooper()) {
+                ((CarSettings) currentActivity).receivedSettingValues();
+            }
+            else
+                currentActivity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        ((CarSettings) currentActivity).receivedSettingValues();
+                    }
+                });
+        }
+    }
 
+    public static void playSound(){
+        MediaPlayer mPlayer = MediaPlayer.create(currentActivity, R.raw.sunet2);
+        mPlayer.start();
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
     public static TBTDevice TBTDeviceListFind(ArrayList<TBTDevice> theList, BluetoothDevice device){
         for(int i = 0; i<theList.size(); i++)

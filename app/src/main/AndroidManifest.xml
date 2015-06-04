@@ -34,30 +34,28 @@
             android:label="@string/title_activity_test"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name=".goActivity1"
-            android:label="@string/title_activity_go_activity1"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".goActivity2"
-            android:label="@string/title_activity_go_activity2"
-            android:screenOrientation="portrait" >
-        </activity>
+
         <activity
             android:name=".ReceivedMessagesActivity"
             android:label="@string/title_activity_received_messages"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
-        <activity
-            android:name=".MS2Activity"
-            android:label="@string/title_activity_ms2"
-            android:screenOrientation="portrait" >
-        </activity>
+
         <activity
             android:name=".remote_control_activity"
             android:label="@string/title_activity_remote_control_activity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".CarCommands"
+            android:label="@string/title_activity_car_commands"
+            android:screenOrientation="portrait"  >
+        </activity>
+        <activity
+            android:name=".CarSettings"
+            android:label="@string/title_activity_car_settings"
+            android:screenOrientation="portrait"  >
         </activity>
     </application>
 

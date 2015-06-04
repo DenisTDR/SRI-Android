@@ -24,28 +24,30 @@ public interface Constants {
         GoRightF, // 4
         GoLeftB,  // 5
         GoRightB, // 6
-        GoM2P1,   // 7
-        GoM2P2,   // 8
-        GoM2P3,   // 9
-        ParkAt,   // 10
-        ParallelPark, // 11
-        FinalP1,  // 12
-        FinalP2,  // 13
-        FinalP3,  // 14
-        IVelocityAvg, // 15
-        IVelocityInst, // 16
-        IDistance,     // 17
-        Int32Value,    // 18
-        ReTransmitLastMsg,  // 19
-        DisplayMessage,   // 20
-        Led,			  // 21
-        ReadSensorValue, //22
-        StopEngines,     //23
-        RotirePeLocStanga, // 24
-        RotirePeLocDreapta, // 25
+        RotirePeLocStanga, // 7
+        RotirePeLocDreapta, // 8
+        RotireSmechera,
+        GoM2P1,   // 9
+        GoM2P2,   // 10
+        GoM2P3,   // 11
+        ParkAt,   // 12
+        ParallelPark, // 13
+        FinalP1,  // 14
+        FinalP2,  // 15
+        FinalP3,  // 16
+        InfoCarStats,     // 19
+        Int32Value,    // 20
+        ReTransmitLastMsg,  // 21
+        DisplayMessage,   // 22
+        Led,			  // 23
+        ReadSensorValue,  // 24
+        StopEngines,      // 25
         GetAverageSpeed,   //26
-        ResetThings,		//27
-        EndAction         // 28
+        ParcurgereDistanta, //27
+        ResetThings,		//28
+        GetSettings,		//29
+        SetSettings,		//29
+        EndAction         // 30
     }
     public enum BTState{
         WaitingStartByte,  //0

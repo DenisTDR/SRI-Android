@@ -24,7 +24,7 @@ public final class BTProtocol {
 
     static void  readByte(byte theByte){
         shouldWait = true;
-        //Log.d("BTProtocol", "Read byte: "+String.valueOf((int)theByte)+" -> "+String.valueOf((char)theByte));
+        Log.d("BTProtocol", "Read byte: "+String.valueOf((int)theByte)+" -> "+String.valueOf((char)theByte));
         tmpBuff[tmpBuffC++] = theByte;
         if(tmpBuffC>=20) {
             //utilis.LogByteArray("Rec", tmpBuff, (short) tmpBuffC);
@@ -51,7 +51,7 @@ public final class BTProtocol {
                 break;
 
             case WaitingDataLength:
-                if(theByte==0){
+                if(theByte == 0){
                     state = Constants.BTState. WaitingEndByte;
                 }
                 state = Constants.BTState.ReadingData;
@@ -71,6 +71,7 @@ public final class BTProtocol {
                 if(dateCrtIndex >= len)
                     state = Constants.BTState.WaitingEndByte;
                 break;
+
             case WaitingEndByte:
                 if(theByte != 0x55){
                     reTransmit("expected end byte"); // error ocurred, send retransmit signal
@@ -87,17 +88,20 @@ public final class BTProtocol {
         //printf("\nstare noua %d: ", state);
     }
 
-    public static void sendByteArray(byte[] array){
-        if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED)
-            if(sendingQueue==null) {
+    public static boolean sendByteArray(byte[] array){
+        if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
+            if (sendingQueue == null) {
                 (sendingQueue = new ArrayList<>()).add(array);
                 timer = new MyTimers();
                 timer.sendEmptyMessageDelayed(MyTimers.TIMER_1, 1000);
-            }
-             else
+            } else
                 sendingQueue.add(array);
-        else
+            return true;
+        }
+        else {
             utilis.displayMessage("Nu esti conectat la masina/ alt dispozitiv!");
+            return false;
+        }
     }
     static void reTransmit(){
         reTransmit("");
@@ -128,6 +132,34 @@ public final class BTProtocol {
             case ReTransmitLastMsg:
                 Log.d("BTProtocol", "Am primit comanda pentru a retransmite ultimul mesaj!");
                 utilis.displayToast("Am primit comanda pentru a retransmite ultimul mesaj!");
+                break;
+            case InfoCarStats:
+
+                int tmpDist = 0, tmpTime = 0;
+                tmpDist |= date[0] << 24;
+                tmpDist |= date[1] << 16;
+                tmpDist |= date[2] << 8;
+                tmpDist |= date[3] & 0xFF;
+
+                tmpTime |= date[4] << 24;
+                tmpTime |= date[5] << 16;
+                tmpTime |= date[6] << 8;
+                tmpTime |= date[7] & 0xFF;
+
+                extVars.TimeDS = tmpTime;
+                extVars.DistanceMM = tmpDist;
+                Log.d("", "received time and distance");
+                utilis.updateCarStats();
+
+                break;
+            case SetSettings:
+                int setting = date[0];
+                extVars.Setting = setting;
+                utilis.updateCarSettings();
+                Log.d("", "settings received from car: "+String.valueOf(setting));
+                break;
+            case GetSettings:
+
                 break;
         }
     }
