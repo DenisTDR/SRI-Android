@@ -1,6 +1,4 @@
-package tdr.bugcar_v1;
-
-import android.location.Address;
+package tdr.bugcar_v1.BT;
 
 /**
  * Created by TDR on 3/6/2015.

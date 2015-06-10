@@ -1,10 +1,9 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.BT;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
+
+import tdr.bugcar_v1.Constants;
 
 /**
  * Created by TDR on 3/7/2015.

@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="tdr.bugcar_v1.ReceivedMessagesActivity">
+    tools:context="tdr.bugcar_v1.Activities.LogsAndMessagesActivity">
 
     <TextView android:text="Mesaje:" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,19 +31,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:focusableInTouchMode="true"
-        android:focusable="true"><requestFocus /></Button>
+        android:focusable="true"></Button>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reset BTP"
         android:id="@+id/resetBTPrtocolBtn"
         android:onClick="resetBtnProtocolAction"
-        android:focusableInTouchMode="true"
         android:focusable="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/Clear"
-        android:layout_toStartOf="@+id/Clear"><requestFocus /></Button>
+        android:layout_toStartOf="@+id/Clear"></Button>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="75dp"
@@ -54,63 +52,91 @@
 
         <Spinner
             android:id="@+id/carActionsSpinner"
-            android:layout_width="185dp"
+            android:layout_width="fill_parent"
+            android:layout_toLeftOf="@+id/sendCommandBtn"
             android:layout_height="30dp"
             />
         <EditText
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/byte1Txt"
-            android:text=""
+            android:text="123"
             android:inputType="number"
+            android:textSize="15sp"
             android:layout_below="@+id/carActionsSpinner"
 
             />
 
         <EditText
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/byte2Txt"
             android:text=""
             android:inputType="number"
+            android:textSize="15sp"
             android:layout_toRightOf="@+id/byte1Txt"
             android:layout_toEndOf="@+id/byte1Txt"
             android:layout_below="@+id/carActionsSpinner"
             />
         <EditText
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/byte3Txt"
             android:text=""
             android:inputType="number"
+            android:textSize="15sp"
             android:layout_toRightOf="@+id/byte2Txt"
             android:layout_toEndOf="@+id/byte2Txt"
             android:layout_below="@+id/carActionsSpinner"
             />
         <EditText
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/byte4Txt"
             android:text=""
             android:inputType="number"
+            android:textSize="15sp"
             android:layout_toRightOf="@+id/byte3Txt"
             android:layout_toEndOf="@+id/byte3Txt"
             android:layout_below="@+id/carActionsSpinner"
             />
+        <EditText
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/byte5Txt"
+            android:text=""
+            android:inputType="number"
+            android:textSize="15sp"
+            android:layout_toRightOf="@+id/byte4Txt"
+            android:layout_toEndOf="@+id/byte4Txt"
+            android:layout_below="@+id/carActionsSpinner"
+            />
 
         <Button
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send"
-            android:id="@+id/button5"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/byte4Txt"
-            android:layout_toEndOf="@+id/byte4Txt"
+            android:id="@+id/sendCommandBtn"
+            android:layout_toRightOf="@+id/byte5Txt"
+            android:layout_toEndOf="@+id/byte5Txt"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:textSize="10sp"
+            android:padding="0dp"
             android:onClick="sendMessageBtnClick"/>
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:id="@+id/clearCommandBtn"
+            android:layout_toRightOf="@+id/byte5Txt"
+            android:layout_toEndOf="@+id/byte5Txt"
+            android:layout_below="@+id/sendCommandBtn"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="10sp"
+            android:padding="0dp"
+            android:onClick="clearCommandBtnClick"/>
     </RelativeLayout>
 
 </RelativeLayout>

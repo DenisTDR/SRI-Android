@@ -17,34 +17,40 @@ public interface Constants {
     public static final String TOAST = "toast";
 
     public enum CarAction {
-        NoAction, // 0
-        GoFront,  // 1
-        GoBack,	  // 2
-        GoLeftF,  // 3
-        GoRightF, // 4
-        GoLeftB,  // 5
-        GoRightB, // 6
-        GoM2P1,   // 7
-        GoM2P2,   // 8
-        GoM2P3,   // 9
-        ParkAt,   // 10
-        ParallelPark, // 11
-        FinalP1,  // 12
-        FinalP2,  // 13
-        FinalP3,  // 14
-        IVelocityAvg, // 15
-        IVelocityInst, // 16
-        IDistance,     // 17
-        Int32Value,    // 18
-        ReTransmitLastMsg,  // 19
-        DisplayMessage,   // 20
-        Led,			  // 21
-        ReadSensorValue, //22
-        StopEngines,     //23
-        RotirePeLocStanga, // 24
-        RotirePeLocDreapta, // 25
-        ResetThings,		//26
-        EndAction         // 27
+        NoAction,
+        GoFront,
+        GoBack,
+        GoLeftF,
+        GoRightF,
+        GoLeftB,
+        GoRightB,
+        RotirePeLocStanga,
+        RotirePeLocDreapta,
+        RotireSmechera,
+        GoM2P1,
+        GoM2P2,
+        GoM2P3,
+        ParkAt,
+        ParallelPark,
+        FinalP1,
+        FinalP2,
+        FinalP3,
+        InfoCarStats,
+        ISensorsValues,
+        ICarSettings,
+        Int32Value,
+        ReTransmitLastMsg,
+        DisplayMessage,
+        Led,
+        ReadSensorValue,
+        StopEngines,
+        GetAverageSpeed,
+        ParcurgereDistanta,
+        ResetThings,
+        GetSettings,
+        SetSettings,
+        CarStarted,
+        EndAction
     }
     public enum BTState{
         WaitingStartByte,  //0

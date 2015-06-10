@@ -1,13 +1,15 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.BT;
 
 import android.bluetooth.BluetoothDevice;
+
+import tdr.bugcar_v1.BT.BTListModel;
 
 /**
  * Created by TDR on 3/7/2015.
  */
 public class TBTDevice {
 
-    BluetoothDevice device;
+    public BluetoothDevice device;
     boolean discovered;
     public TBTDevice(BluetoothDevice device){
         this.device=device;

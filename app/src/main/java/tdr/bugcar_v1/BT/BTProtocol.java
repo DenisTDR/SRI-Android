@@ -1,10 +1,17 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.BT;
 
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import tdr.bugcar_v1.BT.BluetoothChatService;
+import tdr.bugcar_v1.Constants;
+import tdr.bugcar_v1.Timers;
+import tdr.bugcar_v1.ext;
+import tdr.bugcar_v1.extVars;
+import tdr.bugcar_v1.utilis;
 
 /**
  * Created by NMs on 4/20/2015.
@@ -22,13 +29,16 @@ public final class BTProtocol {
     static char tmpBuffC=0;
     public static ArrayList<byte[]> sendingQueue;
 
-    static void  readByte(byte theByte){
-        //Log.d("BTProtocol", "Read byte: "+String.valueOf((int)theByte)+" -> "+String.valueOf((char)theByte));
+
+    public static void  readByte(byte theByte){
+        shouldWait = true;
+        Log.d("BTProtocol", "Read byte: "+String.valueOf(0xFFFF&(theByte&0xFF))+" -> '"+String.valueOf((char)theByte)+"'");
         tmpBuff[tmpBuffC++] = theByte;
         if(tmpBuffC>=20) {
-            utilis.LogByteArray("Rec", tmpBuff, (short) tmpBuffC);
+            //utilis.LogByteArray("Rec", tmpBuff, (short) tmpBuffC);
             tmpBuffC = 0;
         }
+        //Log.d("rb", String.valueOf((int)theByte));
 
 
         switch (state){
@@ -49,8 +59,9 @@ public final class BTProtocol {
                 break;
 
             case WaitingDataLength:
-                if(theByte==0){
-                    state = Constants.BTState. WaitingEndByte;
+                if(theByte == 0){
+                    state = Constants.BTState.WaitingEndByte;
+                    break;
                 }
                 state = Constants.BTState.ReadingData;
                 len = theByte;
@@ -69,12 +80,13 @@ public final class BTProtocol {
                 if(dateCrtIndex >= len)
                     state = Constants.BTState.WaitingEndByte;
                 break;
+
             case WaitingEndByte:
                 if(theByte != 0x55){
                     reTransmit("expected end byte"); // error ocurred, send retransmit signal
                 }
                 else{
-                    Log.d("BTProtocol", "a relatively valid command received!");
+                    //Log.d("BTProtocol", "a relatively valid command received!");
                     prelucreazaDatele();
                 }
                 state = Constants.BTState.WaitingStartByte;
@@ -85,24 +97,30 @@ public final class BTProtocol {
         //printf("\nstare noua %d: ", state);
     }
 
-    public static void sendByteArray(byte[] array){
-        if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED)
-            if(sendingQueue==null) {
+    public static boolean sendByteArray(byte[] array){
+        if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
+            if (sendingQueue == null) {
                 (sendingQueue = new ArrayList<>()).add(array);
-                timer = new MyTimers();
-                timer.sendEmptyMessageDelayed(MyTimers.TIMER_1, 1000);
-            }
-             else
+                 if(!ext.timers.hasMessages(Timers.TimerCheckBtQueue))
+                    ext.timers.sendEmptyMessageDelayed(Timers.TimerCheckBtQueue, 150);
+            } else
                 sendingQueue.add(array);
-        else
+            shouldWait = true;
+            return true;
+        }
+        else {
             utilis.displayMessage("Nu esti conectat la masina/ alt dispozitiv!");
+            return false;
+        }
     }
     static void reTransmit(){
         reTransmit("");
     }
     static void reTransmit(String msg){
-        utilis.displayToast("Un mesaj primit de la masina nu a putut fi procesat!" +( msg.equals("")?"":(" ("+msg+")")));
-        Log.d("BTProtocol", "Un mesaj primit de la masina nu a putut fi procesat!" +( msg.equals("")?"":(" ("+msg+")")));
+        String msgTmp = "Un mesaj primit de la masina nu a putut fi procesat!" +( msg.equals("")?"":(" ("+msg+")"));
+        utilis.displayToast(msgTmp);
+        Log.d("BTProtocol", msgTmp);
+        utilis.receivedAMessage("[T]:"+msgTmp);
         //nu ii pot cere sa imi trimita din nou acel mesaj pentru ca nu l-a stocat
     }
     static void prelucreazaDatele(){
@@ -125,46 +143,55 @@ public final class BTProtocol {
                 Log.d("BTProtocol", "Am primit comanda pentru a retransmite ultimul mesaj!");
                 utilis.displayToast("Am primit comanda pentru a retransmite ultimul mesaj!");
                 break;
+            case InfoCarStats:
+
+                int tmpDist = 0, tmpTime = 0;
+                tmpDist |= date[0] << 24;
+                tmpDist |= date[1] << 16;
+                tmpDist |= date[2] << 8;
+                tmpDist |= date[3] & 0xFF;
+
+                tmpTime |= date[4] << 24;
+                tmpTime |= date[5] << 16;
+                tmpTime |= date[6] << 8;
+                tmpTime |= date[7] & 0xFF;
+
+                extVars.TimeDS = tmpTime;
+                extVars.DistanceMM = tmpDist;
+                //Log.d("", "received time and distance");
+                ext.ReceivedInfos(0);
+
+                break;
+            case ICarSettings:
+                extVars.Setting = date[0];
+                ext.ReceivedInfos(1);
+                Log.d("", "settings received from car: "+String.valueOf(date[0]));
+                break;
+            case ISensorsValues:
+                extVars.SensorsDistance[0] = utilis.byteArrayToInt(date, 0);
+                extVars.SensorsDistance[1] = utilis.byteArrayToInt(date, 4);
+                extVars.SensorsDistance[2] = utilis.byteArrayToInt(date, 8);
+                extVars.SensorsDistance[3] = utilis.byteArrayToInt(date, 12);
+                ext.ReceivedInfos(2);
+                break;
+            case CarStarted:
+                utilis.carStarted();
+                break;
         }
     }
 
 
-    static void checkBtQueue(){
+    public static void checkBtQueue(){
+        if(shouldWait){
+            shouldWait = false;
+            return;
+        }
         if(sendingQueue.size()>0){
             utilis.btChatService.write(sendingQueue.get(0));
             sendingQueue.remove(0);
         }
     }
 
-    static MyTimers timer;
-    public static class MyTimers extends Handler
-    {
+    public static boolean shouldWait = false;
 
-        public static final char TIMER_1 = 0;
-        public static final char TIMER_2 = 1;
-
-        @Override
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what)
-            {
-                case TIMER_1:
-
-                    checkBtQueue();
-                    //Log.d("", "Checked sending queue");
-                    sendEmptyMessageDelayed(TIMER_1, 100);
-                    break;
-                case TIMER_2:
-                    // Do another time update etc..
-                    Log.d("TimerExample", "Timer 2");
-                    sendEmptyMessageDelayed(TIMER_2, 1000);
-
-                    break;
-                default:
-                    removeMessages(TIMER_1);
-                    removeMessages(TIMER_2);
-                    break;
-            }
-        }
-    }
 }

@@ -1,4 +1,4 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.Activities;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -9,15 +9,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,17 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import tdr.bugcar_v1.BT.BTListAdapter;
+import tdr.bugcar_v1.BT.BluetoothChatService;
+import tdr.bugcar_v1.Constants;
+import tdr.bugcar_v1.R;
+import tdr.bugcar_v1.BT.TBTDevice;
+import tdr.bugcar_v1.utilis;
 
-public class BluetoothPanelActivity extends ActionBarActivity {
+
+public class BluetoothPanelActivity extends BaseActivity {
 
     private ListView btDevicesListView;
     private TextView btServiceStatusTxt, bluetoothStatusTxt;
@@ -58,7 +58,6 @@ public class BluetoothPanelActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        utilis.currentActivity = this;
         Log.d("", "onCreate");
 
         setContentView(R.layout.activity_bluetooth_panel);
@@ -92,7 +91,6 @@ public class BluetoothPanelActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        utilis.applicationContext = getApplicationContext();
         startCheckBTTimer();
         isForeground = true;
         Log.d("", "onStart");
@@ -104,7 +102,6 @@ public class BluetoothPanelActivity extends ActionBarActivity {
         }
     }
     protected void initBTServicesAndDoShits(){
-        utilis.initOrReinitBTChatService(mHandler);
 
         btServiceStatusTxt.setText(R.string.starting);
         switch (utilis.btChatService.getState()) {
@@ -143,7 +140,7 @@ public class BluetoothPanelActivity extends ActionBarActivity {
         super.onPause();
         isForeground=false;
         Log.d("", "onPause");
-
+        this.unregisterReceiver(mReceiver);
     }
     @Override
     protected void onDestroy() {
@@ -154,8 +151,6 @@ public class BluetoothPanelActivity extends ActionBarActivity {
             utilis.mBluetoothAdapter.cancelDiscovery();
         }
 
-        // Unregister broadcast listeners
-        this.unregisterReceiver(mReceiver);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -373,62 +368,31 @@ public class BluetoothPanelActivity extends ActionBarActivity {
     /**
      * The Handler that gets information back from the BluetoothChatService
      */
-    private final Handler mHandler = new Handler() {
+    public final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Activity activity = thisActivity;
             switch (msg.what) {
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
-                            //setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-                            Log.d("", "Connected to: " + utilis.btChatService.getConnectedDevice().getName());
                             btServiceStatusTxt.setText(getString(R.string.connected_to, utilis.btChatService.getConnectedDevice().getName()));
-                            if(utilis.mBluetoothAdapter.isDiscovering()){
-                                utilis.mBluetoothAdapter.cancelDiscovery();
-                            }
-                            //mConversationArrayAdapter.clear();
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
-                            Log.d("", "Connecting...");
                             btServiceStatusTxt.setText(R.string.connecting);
-                            //setStatus(R.string.title_connecting);
                             break;
                         case BluetoothChatService.STATE_LISTEN:
                         case BluetoothChatService.STATE_NONE:
-                            Log.d("", "Not connected!");
                             btServiceStatusTxt.setText(R.string.not_connected);
-                            //setStatus(R.string.title_not_connected);
                             break;
                     }
                     break;
                 case Constants.MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-                    String bytesMsg ="[";
-                    for(int i=0;i<writeBuf.length;i++)
-                        bytesMsg += String.valueOf((int)writeBuf[i]) + ",";
-                    Log.d("message sent", bytesMsg+"]");
-                    //mConversationArrayAdapter.add("Me:  " + writeMessage);
                     break;
                 case Constants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    //Log.d("message received", readMessage);
-                    //utilis.displayToast(utilis.btChatService.getConnectedDevice().getName()+": "+readMessage);
-                    //mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
-                    //
-
                     break;
                 case Constants.MESSAGE_TOAST:
-                    if (null != activity) {
-                        //Toast.makeText(activity, msg.getData().getString(Constants.TOAST),
-                        //        Toast.LENGTH_SHORT).show();
-                        Log.d("As Toast", msg.getData().getString(Constants.TOAST));
-                    }
                     break;
             }
         }
