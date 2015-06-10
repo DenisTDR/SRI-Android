@@ -1,10 +1,17 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.BT;
 
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import tdr.bugcar_v1.BT.BluetoothChatService;
+import tdr.bugcar_v1.Constants;
+import tdr.bugcar_v1.Timers;
+import tdr.bugcar_v1.ext;
+import tdr.bugcar_v1.extVars;
+import tdr.bugcar_v1.utilis;
 
 /**
  * Created by NMs on 4/20/2015.
@@ -22,9 +29,10 @@ public final class BTProtocol {
     static char tmpBuffC=0;
     public static ArrayList<byte[]> sendingQueue;
 
-    static void  readByte(byte theByte){
+
+    public static void  readByte(byte theByte){
         shouldWait = true;
-        Log.d("BTProtocol", "Read byte: "+String.valueOf((int)theByte)+" -> "+String.valueOf((char)theByte));
+        Log.d("BTProtocol", "Read byte: "+String.valueOf(0xFFFF&(theByte&0xFF))+" -> '"+String.valueOf((char)theByte)+"'");
         tmpBuff[tmpBuffC++] = theByte;
         if(tmpBuffC>=20) {
             //utilis.LogByteArray("Rec", tmpBuff, (short) tmpBuffC);
@@ -52,7 +60,8 @@ public final class BTProtocol {
 
             case WaitingDataLength:
                 if(theByte == 0){
-                    state = Constants.BTState. WaitingEndByte;
+                    state = Constants.BTState.WaitingEndByte;
+                    break;
                 }
                 state = Constants.BTState.ReadingData;
                 len = theByte;
@@ -92,10 +101,11 @@ public final class BTProtocol {
         if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
             if (sendingQueue == null) {
                 (sendingQueue = new ArrayList<>()).add(array);
-                timer = new MyTimers();
-                timer.sendEmptyMessageDelayed(MyTimers.TIMER_1, 1000);
+                 if(!ext.timers.hasMessages(Timers.TimerCheckBtQueue))
+                    ext.timers.sendEmptyMessageDelayed(Timers.TimerCheckBtQueue, 150);
             } else
                 sendingQueue.add(array);
+            shouldWait = true;
             return true;
         }
         else {
@@ -148,24 +158,30 @@ public final class BTProtocol {
 
                 extVars.TimeDS = tmpTime;
                 extVars.DistanceMM = tmpDist;
-                Log.d("", "received time and distance");
-                utilis.updateCarStats();
+                //Log.d("", "received time and distance");
+                ext.ReceivedInfos(0);
 
                 break;
-            case SetSettings:
-                int setting = date[0];
-                extVars.Setting = setting;
-                utilis.updateCarSettings();
-                Log.d("", "settings received from car: "+String.valueOf(setting));
+            case ICarSettings:
+                extVars.Setting = date[0];
+                ext.ReceivedInfos(1);
+                Log.d("", "settings received from car: "+String.valueOf(date[0]));
                 break;
-            case GetSettings:
-
+            case ISensorsValues:
+                extVars.SensorsDistance[0] = utilis.byteArrayToInt(date, 0);
+                extVars.SensorsDistance[1] = utilis.byteArrayToInt(date, 4);
+                extVars.SensorsDistance[2] = utilis.byteArrayToInt(date, 8);
+                extVars.SensorsDistance[3] = utilis.byteArrayToInt(date, 12);
+                ext.ReceivedInfos(2);
+                break;
+            case CarStarted:
+                utilis.carStarted();
                 break;
         }
     }
 
 
-    static void checkBtQueue(){
+    public static void checkBtQueue(){
         if(shouldWait){
             shouldWait = false;
             return;
@@ -177,35 +193,5 @@ public final class BTProtocol {
     }
 
     public static boolean shouldWait = false;
-    static MyTimers timer;
-    public static class MyTimers extends Handler
-    {
 
-        public static final char TIMER_1 = 0;
-        public static final char TIMER_2 = 1;
-
-        @Override
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what)
-            {
-                case TIMER_1:
-
-                    checkBtQueue();
-                    //Log.d("", "Checked sending queue");
-                    sendEmptyMessageDelayed(TIMER_1, 200);
-                    break;
-                case TIMER_2:
-                    // Do another time update etc..
-                    Log.d("TimerExample", "Timer 2");
-                    sendEmptyMessageDelayed(TIMER_2, 1000);
-
-                    break;
-                default:
-                    removeMessages(TIMER_1);
-                    removeMessages(TIMER_2);
-                    break;
-            }
-        }
-    }
 }

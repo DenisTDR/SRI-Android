@@ -1,22 +1,22 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.Activities;
 
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import tdr.bugcar_v1.BT.BTProtocol;
+import tdr.bugcar_v1.Constants;
+import tdr.bugcar_v1.R;
 
 
-public class remote_control_activity extends ActionBarActivity {
+public class RemoteControlActivity extends BaseActivity {
 
     ImageButton goBackBtn, goFrontBtn, turnLeftFrontBtn, turnRightFrontBtn, turnLeftBackBtn, turnRightBackBtn, rotateLeftBtn, rotateRightBtn;
 
@@ -50,12 +50,6 @@ public class remote_control_activity extends ActionBarActivity {
         turnRightFrontBtn.setOnTouchListener(imageButtonTouchEventListener);
         rotateLeftBtn.setOnTouchListener(imageButtonTouchEventListener);
         rotateRightBtn.setOnTouchListener(imageButtonTouchEventListener);
-//        goFrontBtn.setOnTouchListener(goFrontTouchListener);
-//        goBackBtn.setOnTouchListener(goBackTouchListener);
-//        turnLeftBtn.setOnTouchListener(turnLeftTouchListener);
-//        turnRightBtn.setOnTouchListener(turnRightTouchListener);
-//        rotateLeftBtn.setOnTouchListener(rotateLeftTouchListener);
-//        rotateRightBtn.setOnTouchListener(rotateRightTouchListener);
 
         powerSeekBar = (SeekBar) findViewById(R.id.powerSeekBar);
 
@@ -75,15 +69,12 @@ public class remote_control_activity extends ActionBarActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        utilis.currentActivity = this;
-        utilis.applicationContext = getApplicationContext();
     }
 
     @Override
@@ -99,7 +90,7 @@ public class remote_control_activity extends ActionBarActivity {
     }
     private void SavePreferences(){
         if(powerSeekBar == null || timeTxt==null) return;
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("sri_app", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("time", Integer.parseInt(timeTxt.getText().toString()));
         editor.putInt("power", powerSeekBar.getProgress());
@@ -108,7 +99,7 @@ public class remote_control_activity extends ActionBarActivity {
 
     private void LoadPreferences(){
         if(powerSeekBar == null || timeTxt==null) return;
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("sri_app", MODE_PRIVATE);
         powerSeekBar.setProgress(sharedPreferences.getInt("power", 75*255/100));
         timeTxt.setText(String.valueOf(sharedPreferences.getInt("time", 3)));
     }
@@ -144,33 +135,33 @@ public class remote_control_activity extends ActionBarActivity {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                ImageButton pressed = (ImageButton)v;
                 if(pressed == goFrontBtn){
-                    Log.d("", "go front");
+                    //Log.d("", "go front");
                     sendCmdWithAction(Constants.CarAction.GoFront);
                 }else if(pressed == goBackBtn){
-                    Log.d("", "go back");
+                    //Log.d("", "go back");
                     sendCmdWithAction(Constants.CarAction.GoBack);
                 }else if(pressed == turnLeftFrontBtn){
-                    Log.d("", "turn left front");
+                    //Log.d("", "turn left front");
                     sendCmdWithAction(Constants.CarAction.GoLeftF);
                 }else if(pressed == turnRightFrontBtn){
-                    Log.d("", "turn right front");
+                    //Log.d("", "turn right front");
                     sendCmdWithAction(Constants.CarAction.GoRightF);
                 }else if(pressed == turnLeftBackBtn){
-                    Log.d("", "turn left back");
+                    //Log.d("", "turn left back");
                     sendCmdWithAction(Constants.CarAction.GoLeftB);
                 }else if(pressed == turnRightBackBtn){
-                    Log.d("", "turn right back");
+                    //Log.d("", "turn right back");
                     sendCmdWithAction(Constants.CarAction.GoRightB);
                 }else if(pressed == rotateLeftBtn){
-                    Log.d("", "rotate left");
+                    //Log.d("", "rotate left");
                     sendCmdWithAction(Constants.CarAction.RotirePeLocStanga);
                 }else if(pressed == rotateRightBtn){
-                    Log.d("", "rotate right");
+                    //Log.d("", "rotate right");
                     sendCmdWithAction(Constants.CarAction.RotirePeLocDreapta);
                 }
         }
         else if(event.getAction() == MotionEvent.ACTION_UP) {
-            Log.d("", "up");
+            //Log.d("", "up");
             sendCmdWithAction(Constants.CarAction.StopEngines);
         }
         return false;

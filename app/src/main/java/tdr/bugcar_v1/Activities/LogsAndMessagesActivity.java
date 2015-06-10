@@ -1,8 +1,7 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.Activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,10 +11,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import tdr.bugcar_v1.BT.BTProtocol;
+import tdr.bugcar_v1.Constants;
+import tdr.bugcar_v1.R;
+import tdr.bugcar_v1.extVars;
+import tdr.bugcar_v1.utilis;
 
-public class ReceivedMessagesActivity extends ActionBarActivity {
 
-    EditText byte1Txt, byte2Txt, byte3Txt, byte4Txt;
+public class LogsAndMessagesActivity extends BaseActivity {
+
+    EditText byte1Txt, byte2Txt, byte3Txt, byte4Txt, byte5Txt;
     Spinner carActionsSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +38,7 @@ public class ReceivedMessagesActivity extends ActionBarActivity {
         byte2Txt = (EditText)findViewById(R.id.byte2Txt);
         byte3Txt = (EditText)findViewById(R.id.byte3Txt);
         byte4Txt = (EditText)findViewById(R.id.byte4Txt);
-
-        utilis.currentActivity = this;
-
-        byte1Txt.setText(extVars.byteTxtValues[1]);
-        byte2Txt.setText(extVars.byteTxtValues[2]);
-        byte3Txt.setText(extVars.byteTxtValues[3]);
-        byte4Txt.setText(extVars.byteTxtValues[4]);
-        carActionsSpinner.setSelection(extVars.selectedCarAction.ordinal(), true);
+        byte5Txt = (EditText)findViewById(R.id.byte5Txt);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -69,14 +67,39 @@ public class ReceivedMessagesActivity extends ActionBarActivity {
 
     @Override
     protected void onPause() {
+        SavePreferences();
         super.onPause();
-        extVars.byteTxtValues[1]=byte1Txt.getText().toString();
-        extVars.byteTxtValues[2]=byte2Txt.getText().toString();
-        extVars.byteTxtValues[3]=byte3Txt.getText().toString();
-        extVars.byteTxtValues[4]=byte4Txt.getText().toString();
-        extVars.selectedCarAction = (Constants.CarAction)carActionsSpinner.getSelectedItem();
-
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    protected void onResume(){
+        LoadPreferences();
+        super.onResume();
+    }
+    private void SavePreferences(){
+        if(byte1Txt == null) return;
+        SharedPreferences sharedPreferences = getSharedPreferences("sri_app", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("byte1", byte1Txt.getText().toString());
+        editor.putString("byte2", byte2Txt.getText().toString());
+        editor.putString("byte3", byte3Txt.getText().toString());
+        editor.putString("byte4", byte4Txt.getText().toString());
+        editor.putString("byte5", byte5Txt.getText().toString());
+        editor.putInt("carAction", ((Constants.CarAction)carActionsSpinner.getSelectedItem()).ordinal());
+
+        editor.apply();   // I missed to save the data to preference here,.
+    }
+
+    private void LoadPreferences(){
+        if(byte1Txt == null) return;
+        SharedPreferences sp = getSharedPreferences("sri_app", MODE_PRIVATE);
+        byte1Txt.setText(sp.getString("byte1", ""));
+        byte2Txt.setText(sp.getString("byte2", ""));
+        byte3Txt.setText(sp.getString("byte3", ""));
+        byte4Txt.setText(sp.getString("byte4", ""));
+        byte5Txt.setText(sp.getString("byte5", ""));
+        carActionsSpinner.setSelection(sp.getInt("carAction", 0), true);
     }
 
     public void clearMessages(View view){
@@ -91,9 +114,10 @@ public class ReceivedMessagesActivity extends ActionBarActivity {
 
         int len, cnt=3;
         len = (byte1Txt.getText().length() > 0? 1: 0)
-            + (byte2Txt.getText().length() > 0? 1: 0)
-            + (byte3Txt.getText().length() > 0? 1: 0)
-            + (byte4Txt.getText().length() > 0? 1: 0);
+                + (byte2Txt.getText().length() > 0? 1: 0)
+                + (byte3Txt.getText().length() > 0? 1: 0)
+                + (byte4Txt.getText().length() > 0? 1: 0)
+                + (byte5Txt.getText().length() > 0? 1: 0);
 
        // utilis.displayMessage(String.valueOf(len));
 
@@ -110,11 +134,20 @@ public class ReceivedMessagesActivity extends ActionBarActivity {
             msg[cnt++] = (byte)Integer.parseInt(byte3Txt.getText().toString());
         if(byte4Txt.getText().length() > 0)
             msg[cnt++] = (byte)Integer.parseInt(byte4Txt.getText().toString());
+        if(byte5Txt.getText().length() > 0)
+            msg[cnt++] = (byte)Integer.parseInt(byte5Txt.getText().toString());
         msg[cnt]=Constants.EndByte;
 
         //for(int i=0;i<len+4; i++)
         //    Log.d("RMA", String.valueOf ((int)msg[i]));
 
         BTProtocol.sendByteArray(msg);
+    }
+    public void clearCommandBtnClick(View view){
+        byte1Txt.setText("");
+        byte2Txt.setText("");
+        byte3Txt.setText("");
+        byte4Txt.setText("");
+        byte5Txt.setText("");
     }
 }

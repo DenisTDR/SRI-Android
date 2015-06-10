@@ -1,19 +1,21 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import tdr.bugcar_v1.BT.BTProtocol;
+import tdr.bugcar_v1.Constants;
+import tdr.bugcar_v1.R;
 
-public class CarCommands extends ActionBarActivity {
+
+public class CarCommandsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        utilis.currentActivity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_commands);
     }
@@ -42,7 +44,7 @@ public class CarCommands extends ActionBarActivity {
     }
 
     public void openCarSettings(View view){
-        Intent testActivity = new Intent(this, CarSettings.class);
+        Intent testActivity = new Intent(this, CarSettingsActivity.class);
         startActivity(testActivity);
     }
     public void doPPBtnPressed(View view){

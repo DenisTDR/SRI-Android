@@ -1,34 +1,28 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import tdr.bugcar_v1.BT.BluetoothChatService;
+import tdr.bugcar_v1.Constants;
+import tdr.bugcar_v1.R;
+import tdr.bugcar_v1.ext;
+import tdr.bugcar_v1.extVars;
+import tdr.bugcar_v1.utilis;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     Intent bluetoothPanelActivity = null;
-    Activity thisActivity = this;
     TextView btServiceStatusTxt, distTxt, avgVelTxt, timeEnginesOnTxt;
 
     @Override
@@ -40,17 +34,12 @@ public class MainActivity extends ActionBarActivity {
         distTxt = (TextView)findViewById(R.id.distTxt);
         avgVelTxt = (TextView)findViewById(R.id.avgVelTxt);
         timeEnginesOnTxt = (TextView)findViewById(R.id.timeEnginesOnTxt);
-        //Intent intent = new Intent(this, DisplayMessageActivity.class);
-        //startActivity(intent);
-        utilis.initVars();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        utilis.currentActivity = this;
-        utilis.applicationContext=getApplicationContext();
-        utilis.initOrReinitBTChatService(mHandler);
         btServiceStatusTxt.setText(R.string.starting);
         switch (utilis.btChatService.getState()) {
             case BluetoothChatService.STATE_CONNECTED:
@@ -68,12 +57,20 @@ public class MainActivity extends ActionBarActivity {
                 //setStatus(R.string.title_not_connected);
                 break;
         }
-        reloadCarStats();
+        //ext.loadPreferences();
+        this.ReceivedInfos(0);
 
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ext.loadPreferences();
+    }
 
-    public void reloadCarStats(){
+    @Override
+    public void ReceivedInfos(int what){
+        if(what!=0) return;
         distTxt.setText(String.valueOf(extVars.DistanceMM/10.0) + " cm");
         if(extVars.TimeDS==0)
             avgVelTxt.setText(String.valueOf(0));
@@ -82,26 +79,8 @@ public class MainActivity extends ActionBarActivity {
         timeEnginesOnTxt.setText(String.valueOf(extVars.TimeDS/10.0) + " s");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void openCarInfoActivity(View view){
+        startActivity(new Intent(this, CarInfoActivity.class));
     }
 
     public void openBluetoothPanel (View view){
@@ -110,12 +89,8 @@ public class MainActivity extends ActionBarActivity {
         startActivity(bluetoothPanelActivity);
     }
 
-    public void openTestActivity(View view){
-        Intent testActivity = new Intent(this, TestActivity.class);
-        startActivity(testActivity);
-    }
     public void openCarCommands(View view){
-        Intent testActivity = new Intent(this, CarCommands.class);
+        Intent testActivity = new Intent(this, CarCommandsActivity.class);
         startActivity(testActivity);
     }
     public void disconnectBTServiceIfConnected(View view){
@@ -126,70 +101,53 @@ public class MainActivity extends ActionBarActivity {
     Intent remoteControlIntent;
     public void openRemoteControlClickAction(View view){
         if(remoteControlIntent == null) {
-            remoteControlIntent = new Intent(this, remote_control_activity.class);
+            remoteControlIntent = new Intent(this, RemoteControlActivity.class);
             Log.d("", "intent created!");
         }
         startActivity(remoteControlIntent);
 
     }
-
     public void openMessagesActivity(View view){
-        Intent rma = new Intent(this, ReceivedMessagesActivity.class);
+        Intent rma = new Intent(this, LogsAndMessagesActivity.class);
         startActivity(rma);
     }
-    public void openMs2(View view){
-        //utilis.displayToast(String.valueOf((int)Constants.CarAction.IVelocityAvg.ordinal()));
-        //Intent ms2a = new Intent(this, MS2Activity.class);
-        //startActivity(ms2a);
+
+    public void testUnsignedByte(View view){
+        byte b[] = new byte[5];
+        b[0] = 1;
+        b[1] = 55;
+        b[2] = 3;
+        b[3] = (byte)196;
+        b[4] = 5;
+        Log.d("", String.valueOf(utilis.byteArrayToInt(b, 1)));
+        //ext.loadPreferences();
     }
-    private final Handler mHandler = new Handler() {
+    public final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Activity activity = thisActivity;
             switch (msg.what) {
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
-                            //setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-                            Log.d("", "Connected to: " + utilis.btChatService.getConnectedDevice().getName());
+                            //Log.d("", "Connected to: " + utilis.btChatService.getConnectedDevice().getName());
                             btServiceStatusTxt.setText(getString(R.string.connected_to, utilis.btChatService.getConnectedDevice().getName()));
-                            //mConversationArrayAdapter.clear();
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
-                            Log.d("", "Connecting...");
+                            //Log.d("", "Connecting...");
                             btServiceStatusTxt.setText(R.string.connecting);
-                            //setStatus(R.string.title_connecting);
                             break;
                         case BluetoothChatService.STATE_LISTEN:
                         case BluetoothChatService.STATE_NONE:
-                            Log.d("", "Not connected!");
+                            //Log.d("", "Not connected!");
                             btServiceStatusTxt.setText(R.string.not_connected);
-                            //setStatus(R.string.title_not_connected);
                             break;
                     }
                     break;
                 case Constants.MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    utilis.LogByteArray("Sentn", writeBuf, (short)writeBuf.length);
+                    //byte[] writeBuf = (byte[]) msg.obj;
+                    //utilis.LogByteArray("Sentn", writeBuf, (short)writeBuf.length);
                     break;
-                case Constants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    //Log.d("message received", readMessage);
-                    //utilis.displayToast(utilis.btChatService.getConnectedDevice().getName()+": "+readMessage);
-                    //mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
-                    break;
-                case Constants.MESSAGE_DEVICE_NAME:
-                    //do nothing, we can get this from utilis.btChatService.getConnDevi().name. ...
-                    break;
-                case Constants.MESSAGE_TOAST:
-                    if (null != activity) {
-                        //Toast.makeText(activity, msg.getData().getString(Constants.TOAST),
-                        //        Toast.LENGTH_SHORT).show();
-                        Log.d("As Toast", msg.getData().getString(Constants.TOAST));
-                    }
-                    break;
+
             }
         }
     };

@@ -96,7 +96,24 @@
                     android:id="@+id/timeEnginesOnTxt"
                     android:background="@drawable/shape"/>
             </TableRow>
-
+            <TableRow
+                android:paddingBottom="5dp">
+                <Button
+                    android:text="Car Info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".50"
+                    android:onClick="openCarInfoActivity"/>
+            </TableRow>
+            <TableRow
+                android:paddingBottom="5dp">
+                <Button
+                    android:text="test"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".50"
+                    android:onClick="testUnsignedByte"/>
+            </TableRow>
         </TableLayout>
 
 

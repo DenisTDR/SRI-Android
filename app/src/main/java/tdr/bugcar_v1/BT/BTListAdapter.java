@@ -1,4 +1,4 @@
-package tdr.bugcar_v1;
+package tdr.bugcar_v1.BT;
 
 /**
  * Created by TDR on 3/6/2015.
@@ -11,15 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import tdr.bugcar_v1.R;
 
 /********* Adapter class extends with BaseAdapter and implements with OnClickListener ************/
 public class BTListAdapter extends BaseAdapter implements View.OnClickListener {

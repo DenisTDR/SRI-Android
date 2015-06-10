@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="tdr.bugcar_v1.CarSettings">
+    tools:context="tdr.bugcar_v1.Activities.CarSettingsActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Debugging"
             android:id="@+id/debuggingChk"
+            android:onClick="first4ChkPressed"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -25,7 +26,17 @@
             android:layout_height="wrap_content"
             android:text="Read Sensors"
             android:id="@+id/readSensorsChk"
+            android:onClick="first4ChkPressed"
             android:layout_below="@+id/debuggingChk"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Sensors values"
+            android:onClick="first4ChkPressed"
+            android:id="@+id/sendSensorsChk"
+            android:layout_below="@+id/readSensorsChk"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <CheckBox
@@ -33,7 +44,26 @@
             android:layout_height="wrap_content"
             android:text="Send Distance / Time"
             android:id="@+id/sendDistTimeChk"
-            android:layout_below="@+id/readSensorsChk"
+            android:layout_below="@+id/sendSensorsChk"
+            android:onClick="first4ChkPressed"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Auto Connect"
+            android:id="@+id/autoConnectBtChk"
+            android:layout_below="@+id/sendDistTimeChk"
+            android:onClick="autoConnectBTChkPressed"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Auto Set when Car is connected"
+            android:id="@+id/autoSetOnCarConnectChk"
+            android:layout_below="@+id/autoConnectBtChk"
+            android:onClick="autoSetOnCarConnectChkPressed"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         </RelativeLayout>

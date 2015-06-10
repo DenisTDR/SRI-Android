@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">SRI-Android</string>
+    <string name="app_name">SRI-Car</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_display_message">My message</string>
@@ -33,5 +33,6 @@
     <string name="title_activity_remote_control_activity">Remote Control</string>
     <string name="title_activity_car_commands">CarCommands</string>
     <string name="title_activity_car_settings">CarSettings</string>
+    <string name="title_activity_car_info">CarInfoActivity</string>
 
 </resources>
