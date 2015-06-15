@@ -40,9 +40,19 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Parking Area"
+            android:id="@+id/paBtn"
+            android:layout_below="@+id/doPPBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:onClick="paBtnPressed"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Reset"
             android:id="@+id/resetBtn"
-            android:layout_below="@+id/doPPBtn"
+            android:layout_below="@+id/paBtn"
             android:layout_centerHorizontal="true"
             android:onClick="resetBtnPressed"/>
 

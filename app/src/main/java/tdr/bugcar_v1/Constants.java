@@ -50,6 +50,7 @@ public interface Constants {
         GetSettings,
         SetSettings,
         CarStarted,
+        CRCSumFailed,
         EndAction
     }
     public enum BTState{

@@ -101,6 +101,7 @@ public class RemoteControlActivity extends BaseActivity {
         if(powerSeekBar == null || timeTxt==null) return;
         SharedPreferences sharedPreferences = getSharedPreferences("sri_app", MODE_PRIVATE);
         powerSeekBar.setProgress(sharedPreferences.getInt("power", 75*255/100));
+        powerTxt.setText("Power: "+ (String.format("%.0f", (double)powerSeekBar.getProgress()/powerSeekBar.getMax()*100)) + "%");
         timeTxt.setText(String.valueOf(sharedPreferences.getInt("time", 3)));
     }
     @Override
@@ -170,14 +171,15 @@ public class RemoteControlActivity extends BaseActivity {
 
 
     void sendCmdWithAction(Constants.CarAction cAction){
-        byte[] buff = new byte[7];
-        buff[0] = (byte)0xAA;
-        buff[1] = (byte)cAction.ordinal();
-        buff[2] = 3;
-        buff[3] = (byte) Integer.parseInt(timeTxt.getText().toString());
-        buff[4] = (byte) powerSeekBar.getProgress();
-        buff[5] = 0;
-        buff[6] = 0x55;
+
+        byte[] buff = new byte[5];
+
+        buff[0] = (byte)cAction.ordinal();
+        buff[1] = 3;
+        buff[2] = (byte) Integer.parseInt(timeTxt.getText().toString());
+        buff[3] = (byte) powerSeekBar.getProgress();
+        buff[4] = 0;
+
         BTProtocol.sendByteArray(buff);
     }
 }

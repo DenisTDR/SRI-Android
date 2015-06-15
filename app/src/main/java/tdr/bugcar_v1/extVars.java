@@ -12,6 +12,7 @@ public final class extVars {
 
     public static int DistanceMM=0, TimeDS=0, Setting=0;
 
+
     public static int[] SensorsDistance;
     public static boolean autoBTConnect = false, autoSetOnCarConnect = false;
 

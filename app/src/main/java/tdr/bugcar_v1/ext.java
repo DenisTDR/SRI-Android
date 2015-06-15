@@ -80,7 +80,8 @@ public final class ext {
     static int clocksToWait=0;
     public static void autoConnectBTSMF(){
         if(!extVars.autoBTConnect) return;
-        if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED)
+        if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED
+                || utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTING)
             return;
         if(utilis.checkBlueToothEnabled() == 1) {
 
@@ -149,6 +150,7 @@ public final class ext {
                             if(utilis.mBluetoothAdapter.isDiscovering()){
                                 utilis.mBluetoothAdapter.cancelDiscovery();
                             }
+                            utilis.carStarted();
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
                             Log.d("", "Connecting...");
@@ -167,8 +169,9 @@ public final class ext {
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String bytesMsg ="[";
-                    for(int i=0;i<writeBuf.length;i++)
-                        bytesMsg += String.valueOf((int)writeBuf[i]) + ",";
+                    for(int i=0;i<writeBuf.length-1;i++)
+                        bytesMsg += String.valueOf(0xFFFF&(writeBuf[i]&0xFF)) + ",";
+                    bytesMsg += String.valueOf(0xFFFF&(writeBuf[writeBuf.length-1]&0xFF))+"]";
                     Log.d("message sent", bytesMsg+"]");
                     break;
                 case Constants.MESSAGE_READ:

@@ -140,7 +140,9 @@ public class BluetoothPanelActivity extends BaseActivity {
         super.onPause();
         isForeground=false;
         Log.d("", "onPause");
-        this.unregisterReceiver(mReceiver);
+        try {
+            this.unregisterReceiver(mReceiver);
+        }catch(IllegalArgumentException iae){}
     }
     @Override
     protected void onDestroy() {

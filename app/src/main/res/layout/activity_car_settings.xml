@@ -66,7 +66,60 @@
             android:onClick="autoSetOnCarConnectChkPressed"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/autoSetOnCarConnectChk">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Neon Light Type: "
+                android:padding="7dp"
+                android:gravity="end"
+                android:id="@+id/neonLTLbl" />
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation='horizontal'
+                android:layout_below="@+id/neonLTLbl"
+                android:id="@+id/neonLRG"
+                >
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off"
+                    android:id="@+id/neonTypeOffRB"
+                    />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:id="@+id/neonType1RB"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:id="@+id/neonType2RB" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:id="@+id/neonType3RB" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:id="@+id/neonType4RB"/>
+
+
+            </RadioGroup>
+
         </RelativeLayout>
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,6 +162,7 @@
             android:padding="10dp"
             android:id="@+id/statusTxt"
             android:background="@drawable/shape"
+            android:textColor="@android:color/black"
             />
 
         </RelativeLayout>

@@ -34,5 +34,6 @@
     <string name="title_activity_car_commands">CarCommands</string>
     <string name="title_activity_car_settings">CarSettings</string>
     <string name="title_activity_car_info">CarInfoActivity</string>
+    <string name="title_activity_parking_area">ParkingAreaActivity</string>
 
 </resources>

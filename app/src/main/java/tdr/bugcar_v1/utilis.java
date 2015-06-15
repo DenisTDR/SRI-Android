@@ -94,13 +94,14 @@ public final class utilis {
                 receivedMessagesAdapter.add(msg);
         }
         else
-            ext.thisApp.getCurrentActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    if (receivedMessagesAdapter == null)
-                        receivedMessagesList.add(msg);
-                    else
-                        receivedMessagesAdapter.add(msg);
-                }
+            if(ext.thisApp.getCurrentActivity()!=null)
+                ext.thisApp.getCurrentActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (receivedMessagesAdapter == null)
+                            receivedMessagesList.add(msg);
+                        else
+                            receivedMessagesAdapter.add(msg);
+                        }
             });
         if(msg2.startsWith("x")){
             utilis.playSound();
@@ -118,12 +119,12 @@ public final class utilis {
     }
     public static void carStarted(){
         if(extVars.autoSetOnCarConnect){
-            byte[] msg = new byte[5];
-            msg[0] = Constants.StartByte;
-            msg[1] = (byte)Constants.CarAction.SetSettings.ordinal();
-            msg[2] = 1;
-            msg[3] = (byte)extVars.Setting;
-            msg[4] = Constants.EndByte;
+            byte[] msg = new byte[3];
+
+            msg[0] = (byte)Constants.CarAction.SetSettings.ordinal();
+            msg[1] = 1;
+            msg[2] = (byte)extVars.Setting;
+
             BTProtocol.sendByteArray(msg);
         }
     }
@@ -144,8 +145,8 @@ public final class utilis {
     }
 
     public static void playSound(){
-        MediaPlayer mPlayer = MediaPlayer.create(ext.thisApp.getCurrentActivity(), R.raw.sunet2);
-        mPlayer.start();
+        //MediaPlayer mPlayer = MediaPlayer.create(ext.thisApp.getCurrentActivity(), R.raw.sunet2);
+        //mPlayer.start();
     }
 
     public static double round(double value, int places) {

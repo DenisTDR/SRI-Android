@@ -5,8 +5,8 @@ import android.os.Message;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import tdr.bugcar_v1.BT.BluetoothChatService;
 import tdr.bugcar_v1.Constants;
 import tdr.bugcar_v1.Timers;
 import tdr.bugcar_v1.ext;
@@ -32,15 +32,13 @@ public final class BTProtocol {
 
     public static void  readByte(byte theByte){
         shouldWait = true;
-        Log.d("BTProtocol", "Read byte: "+String.valueOf(0xFFFF&(theByte&0xFF))+" -> '"+String.valueOf((char)theByte)+"'");
+        //Log.d("BTProtocol", "Read byte: "+String.valueOf(0xFFFF&(theByte&0xFF))+" -> '"+String.valueOf((char)theByte)+"'");
         tmpBuff[tmpBuffC++] = theByte;
         if(tmpBuffC>=20) {
             //utilis.LogByteArray("Rec", tmpBuff, (short) tmpBuffC);
             tmpBuffC = 0;
         }
         //Log.d("rb", String.valueOf((int)theByte));
-
-
         switch (state){
             case WaitingStartByte:
                 if(theByte == Constants.StartByte)
@@ -177,18 +175,37 @@ public final class BTProtocol {
             case CarStarted:
                 utilis.carStarted();
                 break;
+            case CRCSumFailed:
+                Log.d("", "CRC sum error! cmdId: "+String.valueOf(0xFFFF&(date[0]&0xFF)));
+                for(int i=0;i<10;i++)
+                    utilis.btChatService.write(new byte[]{0x00, 0x00, 0x00, 0x00, 0x00});
+                break;
         }
     }
 
-
+    public static byte crtCmdIndex = 0;
     public static void checkBtQueue(){
         if(shouldWait){
             shouldWait = false;
             return;
         }
         if(sendingQueue.size()>0){
-            utilis.btChatService.write(sendingQueue.get(0));
+            byte[] array = sendingQueue.get(0);
+            if(array.length == 1)
+                array = new byte[]{array[0], 0};
+            byte crc = 0;
+            for(byte c : array)
+                crc += c;
+            byte[] newArray = new byte[array.length + 3];
+            newArray[0] = Constants.StartByte;
+            for(byte i=0; i<array.length; i++)
+                 newArray[i+1] = array[i];
+            newArray[array.length + 1] = crtCmdIndex;
+            newArray[array.length + 2] = crc;
+            utilis.btChatService.write(newArray);
+
             sendingQueue.remove(0);
+            crtCmdIndex++;
         }
     }
 

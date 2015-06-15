@@ -56,6 +56,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:padding="7dp"
+                    android:textColor="@android:color/black"
                     android:id="@+id/distTxt"
                     android:layout_height="fill_parent"
                     android:background="@drawable/shape"/>
@@ -73,6 +74,7 @@
                     android:gravity="start"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:textColor="@android:color/black"
                     android:padding="7dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/avgVelTxt"
@@ -91,6 +93,7 @@
                     android:gravity="start"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:textColor="@android:color/black"
                     android:layout_height="fill_parent"
                     android:padding="7dp"
                     android:id="@+id/timeEnginesOnTxt"

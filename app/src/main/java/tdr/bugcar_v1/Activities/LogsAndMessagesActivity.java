@@ -112,7 +112,7 @@ public class LogsAndMessagesActivity extends BaseActivity {
     }
     public void sendMessageBtnClick(View view){
 
-        int len, cnt=3;
+        int len, cnt=2;
         len = (byte1Txt.getText().length() > 0? 1: 0)
                 + (byte2Txt.getText().length() > 0? 1: 0)
                 + (byte3Txt.getText().length() > 0? 1: 0)
@@ -121,10 +121,9 @@ public class LogsAndMessagesActivity extends BaseActivity {
 
        // utilis.displayMessage(String.valueOf(len));
 
-        byte[] msg = new byte[len + 4];
-        msg[0] = Constants.StartByte;
-        msg[1] = (byte)((Constants.CarAction)carActionsSpinner.getSelectedItem()).ordinal();
-        msg[2] = (byte)len;
+        byte[] msg = new byte[len + 2];
+        msg[0] = (byte)((Constants.CarAction)carActionsSpinner.getSelectedItem()).ordinal();
+        msg[1] = (byte)len;
 
         if(byte1Txt.getText().length() > 0)
             msg[cnt++] = (byte)Integer.parseInt(byte1Txt.getText().toString());
@@ -136,7 +135,6 @@ public class LogsAndMessagesActivity extends BaseActivity {
             msg[cnt++] = (byte)Integer.parseInt(byte4Txt.getText().toString());
         if(byte5Txt.getText().length() > 0)
             msg[cnt++] = (byte)Integer.parseInt(byte5Txt.getText().toString());
-        msg[cnt]=Constants.EndByte;
 
         //for(int i=0;i<len+4; i++)
         //    Log.d("RMA", String.valueOf ((int)msg[i]));

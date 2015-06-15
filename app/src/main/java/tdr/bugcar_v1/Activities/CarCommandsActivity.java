@@ -48,22 +48,22 @@ public class CarCommandsActivity extends BaseActivity {
         startActivity(testActivity);
     }
     public void doPPBtnPressed(View view){
-        byte[] msg = new byte[4];
-        msg[0] = Constants.StartByte;
-        msg[1] = (byte)Constants.CarAction.ParallelPark.ordinal();
-        msg[2] = 0;
-        msg[3] = Constants.EndByte;
+        byte[] msg = new byte[1];
+        msg[0] = (byte)Constants.CarAction.ParallelPark.ordinal();
+
         BTProtocol.sendByteArray(msg);
     }
     public void resetBtnPressed(View view){
-        byte[] msg = new byte[4];
-        msg[0] = Constants.StartByte;
-        msg[1] = (byte)Constants.CarAction.ResetThings.ordinal();
-        msg[2] = 0;
-        msg[3] = Constants.EndByte;
+        byte[] msg = new byte[1];
+        msg[0] = (byte)Constants.CarAction.ResetThings.ordinal();
         BTProtocol.sendByteArray(msg);
     }
     public void backBtnPressed(View view){
         finish();
+    }
+    public void paBtnPressed(View view){
+
+        Intent testActivity = new Intent(this, ParkingAreaActivity.class);
+        startActivity(testActivity);
     }
 }
