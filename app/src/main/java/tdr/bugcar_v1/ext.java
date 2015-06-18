@@ -79,7 +79,10 @@ public final class ext {
     static BluetoothDevice desideredBTDevice = null;
     static int clocksToWait=0;
     public static void autoConnectBTSMF(){
-        if(!extVars.autoBTConnect) return;
+        if(!extVars.autoBTConnect)
+            return;
+        if(utilis.mBluetoothAdapter.isDiscovering())
+            return;
         if(utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTED
                 || utilis.btChatService.getState() == BluetoothChatService.STATE_CONNECTING)
             return;
@@ -107,6 +110,16 @@ public final class ext {
                 }
             }
         }
+    }
+    public static int lastDist;
+    public static void calcInstSpeedSMF(){
+        if(extVars.DistanceMM == lastDist)
+            extVars.InstSpeed = 0;
+        else{
+            extVars.InstSpeed = (extVars.DistanceMM - lastDist) / 500.0f;
+            lastDist = extVars.DistanceMM;
+        }
+        ext.ReceivedInfos(0);
     }
 
     private static final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

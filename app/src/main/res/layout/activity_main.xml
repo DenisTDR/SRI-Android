@@ -45,7 +45,7 @@
                 android:paddingBottom="5dp"
                 >
                 <TextView
-                    android:text="Distanta parcursa:"
+                    android:text="Distance:"
                     android:padding="7dp"
                     android:layout_width="0dp"
                     android:gravity="end"
@@ -64,7 +64,7 @@
             <TableRow
                 android:paddingBottom="5dp">
                 <TextView
-                    android:text="Viteza medie:"
+                    android:text="Avg. Speed:"
                     android:layout_width="0dp"
                     android:padding="7dp"
                     android:gravity="end"
@@ -83,7 +83,7 @@
             <TableRow
                 android:paddingBottom="5dp">
                 <TextView
-                    android:text="Timp motoare pornite:"
+                    android:text="Moving Time:"
                     android:layout_width="0dp"
                     android:padding="7dp"
                     android:gravity="end"

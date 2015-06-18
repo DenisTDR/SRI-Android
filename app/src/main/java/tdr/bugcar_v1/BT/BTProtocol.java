@@ -107,7 +107,7 @@ public final class BTProtocol {
             return true;
         }
         else {
-            utilis.displayMessage("Nu esti conectat la masina/ alt dispozitiv!");
+            utilis.displayMessage("Nu esti conectat la masina sau alt dispozitiv!");
             return false;
         }
     }
@@ -116,7 +116,7 @@ public final class BTProtocol {
     }
     static void reTransmit(String msg){
         String msgTmp = "Un mesaj primit de la masina nu a putut fi procesat!" +( msg.equals("")?"":(" ("+msg+")"));
-        utilis.displayToast(msgTmp);
+        //utilis.displayToast(msgTmp);
         Log.d("BTProtocol", msgTmp);
         utilis.receivedAMessage("[T]:"+msgTmp);
         //nu ii pot cere sa imi trimita din nou acel mesaj pentru ca nu l-a stocat
@@ -156,8 +156,14 @@ public final class BTProtocol {
 
                 extVars.TimeDS = tmpTime;
                 extVars.DistanceMM = tmpDist;
-                //Log.d("", "received time and distance");
-                ext.ReceivedInfos(0);
+
+                if(extVars.DistanceMM >=0) {
+                    //Log.d("", "received time and distance");
+                    ext.ReceivedInfos(0);
+
+                    if(!ext.timers.hasMessages(Timers.TimerForInstSpeed))
+                        ext.timers.sendEmptyMessageDelayed(Timers.TimerForInstSpeed, 500);
+                }
 
                 break;
             case ICarSettings:
@@ -179,6 +185,15 @@ public final class BTProtocol {
                 Log.d("", "CRC sum error! cmdId: "+String.valueOf(0xFFFF&(date[0]&0xFF)));
                 for(int i=0;i<10;i++)
                     utilis.btChatService.write(new byte[]{0x00, 0x00, 0x00, 0x00, 0x00});
+                break;
+            case ICheckPoint:
+                String str="";
+                for(int i=0;i<len;i++){
+                    str+=String.valueOf((char)date[i]);
+                }
+                extVars.crtCheckPoint = str;
+                ext.ReceivedInfos(7);
+                Log.d("am primit checkpoint", str);
                 break;
         }
     }

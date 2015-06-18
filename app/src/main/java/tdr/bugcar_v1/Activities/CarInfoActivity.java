@@ -3,6 +3,7 @@ package tdr.bugcar_v1.Activities;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -38,13 +39,15 @@ public class CarInfoActivity extends BaseActivity {
     @Override
     public void ReceivedInfos(int what) {
         if(what == 0) {
-
-            distTxt.setText(String.valueOf(extVars.DistanceMM / 10.0) + " cm");
-            if (extVars.TimeDS == 0)
-                avgVelTxt.setText(String.valueOf(0));
+            if(extVars.DistanceMM < 0)
+                return;
+            distTxt.setText(String.valueOf(extVars.DistanceMM) + " mm");
+            if(extVars.TimeDS==0)
+                avgVelTxt.setText(String.valueOf('-'));
             else
-                avgVelTxt.setText(String.valueOf(utilis.round(1.0 * extVars.DistanceMM / extVars.TimeDS, 2)) + " cm/s");
-            timeEnginesOnTxt.setText(String.valueOf(extVars.TimeDS / 10.0) + " s");
+                avgVelTxt.setText(String.valueOf( utilis.round(1.0*extVars.DistanceMM/extVars.TimeDS / 100, 3))  + " m/s");
+            timeEnginesOnTxt.setText(String.valueOf(extVars.TimeDS/10.0) + " s");
+            instVelTxt.setText(String.valueOf( utilis.round(extVars.InstSpeed, 3)) + " m/s");
         }
         if(what == 2) {
             sensor0Txt.setText(String.valueOf(extVars.SensorsDistance[0] / 10.0) + " cm");
@@ -52,5 +55,12 @@ public class CarInfoActivity extends BaseActivity {
             sensor2Txt.setText(String.valueOf(extVars.SensorsDistance[2] / 10.0) + " cm");
             sensor3Txt.setText(String.valueOf(extVars.SensorsDistance[3] / 10.0) + " cm");
         }
+    }
+    public void backBtnPressed(View view){
+        finish();
+    }
+
+    public void doShitBtnPressed(View view){
+
     }
 }

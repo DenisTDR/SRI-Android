@@ -20,7 +20,7 @@
                 android:paddingBottom="2dp"
                 >
                 <TextView
-                    android:text="Distanta parcursa:"
+                    android:text="Distance:"
                     android:padding="7dp"
                     android:layout_width="0dp"
                     android:gravity="end"
@@ -39,7 +39,7 @@
             <TableRow
                 android:paddingBottom="2dp">
                 <TextView
-                    android:text="Viteza medie:"
+                    android:text="Avg. Speed:"
                     android:layout_width="0dp"
                     android:padding="7dp"
                     android:gravity="end"
@@ -58,7 +58,7 @@
             <TableRow
                 android:paddingBottom="2dp">
                 <TextView
-                    android:text="Viteza instantanee:"
+                    android:text="Inst. Speed:"
                     android:layout_width="0dp"
                     android:padding="7dp"
                     android:gravity="end"
@@ -77,7 +77,7 @@
                        <TableRow
                 android:paddingBottom="2dp">
                 <TextView
-                    android:text="Timp motoare pornite:"
+                    android:text="Moving:"
                     android:layout_width="0dp"
                     android:padding="7dp"
                     android:gravity="end"
@@ -172,5 +172,27 @@
             </TableRow>
 
         </TableLayout>
+
     </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:onClick="doShitBtnPressed"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:text="Do Shit"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backBtn"
+        android:onClick="backBtnPressed"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:text="Back"/>
 </RelativeLayout>
