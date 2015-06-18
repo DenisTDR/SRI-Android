@@ -140,7 +140,9 @@ public class BluetoothPanelActivity extends BaseActivity {
         super.onPause();
         isForeground=false;
         Log.d("", "onPause");
-        this.unregisterReceiver(mReceiver);
+        try {
+            this.unregisterReceiver(mReceiver);
+        }catch(IllegalArgumentException iae){}
     }
     @Override
     protected void onDestroy() {
@@ -336,14 +338,14 @@ public class BluetoothPanelActivity extends BaseActivity {
             case REQUEST_CONNECT_DEVICE_SECURE:
                 // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.d("", "selected st shit for secure connection");
+                    Log.d("", "selected st for secure connection");
                     //connectDevice(data, true);
                 }
                 break;
             case REQUEST_CONNECT_DEVICE_INSECURE:
                 // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.d("", "selected st shit for insecure connection");
+                    Log.d("", "selected st for insecure connection");
                     //connectDevice(data, false);
                 }
                 break;

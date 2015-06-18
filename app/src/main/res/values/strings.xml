@@ -16,10 +16,11 @@
     <string name="restart_descovering">Restart descovering</string>
     <string name="devices">Devices</string>
     <string name="bt_service_status">Bluetooth Service:</string>
-    <string name="not_connected">Neconectat</string>
+    <string name="not_connected">Not connected</string>
     <string name="connecting">Connecting…</string>
     <string name="connected_to">Connected to %1$s</string>
     <string name="starting">Starting…</string>
+    <string name="descovering">Descovering</string>
 
     <string-array name="sendAsTypes">
         <item>Char</item>
@@ -34,5 +35,6 @@
     <string name="title_activity_car_commands">CarCommands</string>
     <string name="title_activity_car_settings">CarSettings</string>
     <string name="title_activity_car_info">CarInfoActivity</string>
+    <string name="title_activity_parking_area">ParkingAreaActivity</string>
 
 </resources>

@@ -50,6 +50,11 @@ public interface Constants {
         GetSettings,
         SetSettings,
         CarStarted,
+        CRCSumFailed,
+        FSelectedPlaces,
+        FFindPlaces,
+        ICheckPoint,
+        MCUReset,
         EndAction
     }
     public enum BTState{

@@ -1,9 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent" android:padding="0dp"
     tools:context="tdr.bugcar_v1.Activities.RemoteControlActivity">
 
     <SeekBar
@@ -29,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time(s):"
+        android:text="Stop after time(s):"
         android:id="@+id/timeLbl"
         android:layout_below="@+id/powerTxt"
         android:layout_alignParentLeft="true"
@@ -66,16 +63,16 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:id="@+id/goFrontBtn"
             android:src="@drawable/go_front"
             android:scaleType="fitXY"
             android:layout_above="@+id/goBackBtn"
             android:layout_centerHorizontal="true" />
         <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:id="@+id/goBackBtn"
             android:src="@drawable/go_back"
             android:scaleType="fitXY"
@@ -94,8 +91,8 @@
             android:layout_alignParentEnd="true" />
 
         <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
             android:id="@+id/turnFrontRightBtn"
             android:src="@drawable/turn_front_right"
             android:scaleType="fitXY"
@@ -104,8 +101,8 @@
             android:layout_toEndOf="@+id/goFrontBtn" />
 
         <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
             android:id="@+id/turnFrontLeftBtn"
             android:src="@drawable/turn_front_left"
             android:scaleType="fitXY"
@@ -114,8 +111,8 @@
             android:layout_toStartOf="@+id/goFrontBtn" />
 
         <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
             android:id="@+id/turnBackRightBtn"
             android:src="@drawable/turn_back_right"
             android:scaleType="fitXY"
@@ -124,8 +121,8 @@
             android:layout_toEndOf="@+id/goBackBtn" />
 
         <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
             android:id="@+id/turnBackLeftBtn"
             android:src="@drawable/turn_back_left"
             android:scaleType="fitXY"

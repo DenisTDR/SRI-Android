@@ -1,0 +1,179 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    tools:context="tdr.bugcar_v1.Activities.ParkingAreaActivity">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/midRL"
+        android:id="@+id/upRL">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/tableUpL"
+
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_above="@+id/startBtn">
+                <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txttTxt"
+                android:text="pp5a"
+                />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Go"
+                    android:onClick="teleportBtnPressed"
+                    android:layout_toRightOf="@+id/txttTxt"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/startBtn"
+                android:onClick="startBtnPressed"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/stopResetBtn"
+                android:layout_toStartOf="@+id/stopResetBtn"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"
+                android:text="Start"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/stopResetBtn"
+                android:layout_toLeftOf="@+id/backBtn"
+                android:layout_toStartOf="@+id/backBtn"
+                android:onClick="stopResetBtnPressed"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"
+                android:text="Stop + Reset"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/backBtn"
+                android:onClick="backBtnPressed"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"
+                android:text="Back"/>
+
+        </RelativeLayout>
+
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tableUpL"
+            android:layout_above="@+id/tableL">
+            <TableRow>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selected place/exit"
+                    android:layout_weight="1"
+                    android:onClick="paOptionClicked"
+                    android:id="@+id/selppRBtn"
+                    />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Find an empty place"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:onClick="paOptionClicked"
+                    android:id="@+id/fepRBtn"
+                    />
+            </TableRow>
+        </TableLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tableL"
+            android:layout_marginBottom="6dp"
+            >
+            <TableRow>
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:gravity="end"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:text="Parking place:"
+                        android:layout_gravity="end"
+                        android:id="@+id/selPpLbl"
+                        />
+                    <TextView
+                        android:text="-"
+                        android:textColor="@android:color/black"
+                        android:padding="6dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_width="30dp"
+                        android:id="@+id/selPpTxt"
+                        android:background="@drawable/shape"
+                        android:layout_toRightOf="@+id/selPpLbl"
+                        android:layout_toEndOf="@+id/selPpLbl"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:text="Exit:"
+                        android:layout_gravity="end"
+                        android:id="@+id/selExitLbl"
+                        />
+                    <TextView
+                        android:text="-"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_width="30dp"
+                        android:padding="6dp"
+                        android:textColor="@android:color/black"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/selExitTxt"
+                        android:background="@drawable/shape"
+                        android:layout_toRightOf="@+id/selExitLbl"
+                        android:layout_toEndOf="@+id/selExitLbl"/>
+                </RelativeLayout>
+            </TableRow>
+        </TableLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="325dp"
+        android:id="@+id/midRL"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal= "true"
+        android:layout_gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/hello_world"
+            android:src="@drawable/pa_800"
+            android:id="@+id/imgV"
+            android:scaleType="fitEnd"
+            android:layout_centerHorizontal= "true"
+            android:layout_gravity="center"
+            />
+        </RelativeLayout>
+</RelativeLayout>

@@ -3,6 +3,8 @@ package tdr.bugcar_v1.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
@@ -11,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.Collections;
+import java.util.List;
 
 import tdr.bugcar_v1.BT.BluetoothChatService;
 import tdr.bugcar_v1.Constants;
@@ -71,11 +76,14 @@ public class MainActivity extends BaseActivity {
     @Override
     public void ReceivedInfos(int what){
         if(what!=0) return;
-        distTxt.setText(String.valueOf(extVars.DistanceMM/10.0) + " cm");
+
+        if(extVars.DistanceMM < 0)
+            return;
+        distTxt.setText(String.valueOf(extVars.DistanceMM) + " mm");
         if(extVars.TimeDS==0)
             avgVelTxt.setText(String.valueOf(0));
         else
-            avgVelTxt.setText(String.valueOf( utilis.round(1.0*extVars.DistanceMM/extVars.TimeDS, 2))  + " cm/s");
+            avgVelTxt.setText(String.valueOf( utilis.round(1.0*extVars.DistanceMM/extVars.TimeDS / 100, 3))  + " m/s");
         timeEnginesOnTxt.setText(String.valueOf(extVars.TimeDS/10.0) + " s");
     }
 
@@ -121,6 +129,22 @@ public class MainActivity extends BaseActivity {
         b[4] = 5;
         Log.d("", String.valueOf(utilis.byteArrayToInt(b, 1)));
         //ext.loadPreferences();
+        final PackageManager pm = getPackageManager();
+
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List<ResolveInfo> appList = pm.queryIntentActivities(mainIntent, 0);
+        Collections.sort(appList, new ResolveInfo.DisplayNameComparator(pm));
+
+        for (ResolveInfo temp : appList) {
+
+            Log.v("my logs", "package and activity name = "
+                    + temp.activityInfo.packageName + "    "
+                    + temp.activityInfo.name);
+
+
+        }
     }
     public final Handler mHandler = new Handler() {
         @Override

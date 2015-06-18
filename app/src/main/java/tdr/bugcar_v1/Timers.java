@@ -13,9 +13,9 @@ import tdr.bugcar_v1.BT.BTProtocol;
 public class Timers extends Handler {
     public static final char TimerCheckBtQueue = 0;
     public static final char TimerAutoConnectBT = 1;
-    public static final char TIMER_3 = 2;
+    public static final char TimerForInstSpeed = 2;
     public static final char TIMER_4 = 3;
-
+    public static int cnt = 0;
     @Override
     public void handleMessage(Message msg)
     {
@@ -24,17 +24,14 @@ public class Timers extends Handler {
             case TimerCheckBtQueue:
                 BTProtocol.checkBtQueue();
                 sendEmptyMessageDelayed(TimerCheckBtQueue, 50);
-
                 break;
             case TimerAutoConnectBT:
                 ext.autoConnectBTSMF();
-                sendEmptyMessageDelayed(TimerAutoConnectBT, 1000);
+                sendEmptyMessageDelayed(TimerAutoConnectBT, 2000);
                 break;
-            case TIMER_3:
-                // Do another time update etc..
-                Log.d("TimerExample", "Timer 3");
-                //sendEmptyMessageDelayed(TIMER_2, 1000);
-
+            case TimerForInstSpeed:
+                ext.calcInstSpeedSMF();
+                sendEmptyMessageDelayed(TimerForInstSpeed, 800);
                 break;
             case TIMER_4:
                 // Do another time update etc..

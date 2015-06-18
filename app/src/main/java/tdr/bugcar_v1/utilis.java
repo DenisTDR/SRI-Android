@@ -39,21 +39,31 @@ public final class utilis {
            });
 
     }
+    static AlertDialog dlgAlert;
     public static void displayMessage(final String msg){
+        closeAnyOpenedAlertDialog();
         Runnable rnb = new Runnable() {
             public void run() {
-                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(ext.thisApp.getCurrentActivity());
-                dlgAlert.setMessage(msg);
-                dlgAlert.setTitle("");
-                dlgAlert.setPositiveButton("OK", null);
-                dlgAlert.setCancelable(true);
-                dlgAlert.create().show();
+                AlertDialog.Builder dlgAlertB  = new AlertDialog.Builder(ext.thisApp.getCurrentActivity());
+                dlgAlertB.setMessage(msg);
+                dlgAlertB.setTitle("");
+                dlgAlertB.setPositiveButton("OK", null);
+                dlgAlertB.setCancelable(true);
+                dlgAlert = dlgAlertB.create();
+                dlgAlert.show();
             }};
 
         if(Looper.myLooper() == Looper.getMainLooper())
             rnb.run();
         else
             ext.thisApp.getCurrentActivity().runOnUiThread(rnb);
+    }
+    public static void closeAnyOpenedAlertDialog(){
+        if(dlgAlert!=null){
+            try{
+                dlgAlert.dismiss();
+            }catch (Exception exc){}
+        }
     }
 
     public static ArrayList<String> receivedMessagesList;
@@ -94,16 +104,20 @@ public final class utilis {
                 receivedMessagesAdapter.add(msg);
         }
         else
-            ext.thisApp.getCurrentActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    if (receivedMessagesAdapter == null)
-                        receivedMessagesList.add(msg);
-                    else
-                        receivedMessagesAdapter.add(msg);
-                }
+            if(ext.thisApp.getCurrentActivity()!=null)
+                ext.thisApp.getCurrentActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (receivedMessagesAdapter == null)
+                            receivedMessagesList.add(msg);
+                        else
+                            receivedMessagesAdapter.add(msg);
+                        }
             });
         if(msg2.startsWith("x")){
             utilis.playSound();
+            utilis.displayMessage(msg2.substring(1));
+        }
+        else if(msg2.startsWith("y")){
             utilis.displayMessage(msg2.substring(1));
         }
 
@@ -118,12 +132,12 @@ public final class utilis {
     }
     public static void carStarted(){
         if(extVars.autoSetOnCarConnect){
-            byte[] msg = new byte[5];
-            msg[0] = Constants.StartByte;
-            msg[1] = (byte)Constants.CarAction.SetSettings.ordinal();
-            msg[2] = 1;
-            msg[3] = (byte)extVars.Setting;
-            msg[4] = Constants.EndByte;
+            byte[] msg = new byte[3];
+
+            msg[0] = (byte)Constants.CarAction.SetSettings.ordinal();
+            msg[1] = 1;
+            msg[2] = (byte)extVars.Setting;
+
             BTProtocol.sendByteArray(msg);
         }
     }
